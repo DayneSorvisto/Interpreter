@@ -1,0 +1,91 @@
+import java.util.*;
+import java.io.*;
+
+public class BrainFuck { 
+
+        //stores the tape
+	public static byte[] tape = new byte[30000];
+        // data pointer 
+	public static int datapointer; 
+	public static int charpointer;
+	
+	public static void code(int[] c, int charpointer1, int datapointer1) throws IOException { 
+	datapointer = datapointer1;
+	charpointer = charpointer1; 
+	while (charpointer < c.length) { 
+		
+		switch((char) c[charpointer]) {
+		case Token.NEXT: //increment the data pointer to point to next byte on tape
+			datapointer++;
+			charpointer++;
+			break;
+		case Token.PREV: //decrement the data pointer to point to prev byte on tape
+			datapointer--;
+			charpointer++;
+			break;
+		case Token.PLUS: 
+			tape[datapointer]++;
+			charpointer++;
+			break;
+		case Token.MINUS:
+			tape[datapointer]--;
+			charpointer++;
+			break;
+		case Token.INPUT:
+			try {
+				InputStreamReader input = new InputStreamReader(System.in);
+				tape[datapointer] = (byte) input.read();
+				charpointer++;
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			break;
+		case Token.OUTPUT:
+			System.out.println((char) tape[datapointer]);
+			charpointer++;
+			break;
+		case Token.LEFT:
+  if (tape[datapointer] == 0) { 
+    int i = 1;
+    while (i > 0) {
+      char c2 = (char) c[++charpointer];
+      if (c2 == Token.LEFT) 
+        i++;
+      else if (c2 == Token.RIGHT) 
+        i--;    
+    }
+  }
+  charpointer ++;
+  break;
+case Token.RIGHT:
+  int i = 1;
+  while ( i > 0 ) {
+    char c2 = (char) c[--charpointer];
+    if (c2 == Token.LEFT)   
+      i--;
+    else if (c2 == Token.RIGHT) 
+      i++;
+  }
+  break;
+	
+		} 
+}
+		
+	
+	}
+	//the 6 brain fuck tokens
+	static class Token {
+		public final static char NEXT = '>';
+		public final static char PREV = '<';
+		public final static char OUTPUT = '.';
+		public final static char INPUT = ',';
+		public final static char LEFT = '[';
+		public final static char RIGHT = ']';
+		public final static char MINUS = '-';
+		public final static char PLUS = '+';
+
+	}
+
+
+}
